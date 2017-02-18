@@ -102,10 +102,10 @@ func (s *Server) Run() {
 }
 
 func (s *Server) SendMessage(message *Message) {
-	s.MessageProducer.Input() <- &sarama.ProducerMessage {
+	partition, offset, err := s.MessageProducer.SendMessage(&sarama.ProducerMessage{
 		Topic: "golangmessages",
 		Value: message,
-	}
+	})
 }
 
 func newMessageProducer(brokerList []string) sarama.SyncProducer {
