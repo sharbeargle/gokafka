@@ -13,10 +13,7 @@ var (
 )
 
 func main() {
-	if *BROKERS == "" {
-		flag.PrintDefaults()
-		os.Exit(1)
-	}
+	brokerList := strings.Split(*BROKERS, ",")
 
 	consumer, err := sarama.NewConsumer(BROKERS, nil)
 	if err != nil {
