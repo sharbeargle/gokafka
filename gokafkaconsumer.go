@@ -23,11 +23,11 @@ func main() {
 		os.Exit(1)
 	}
 
+	fmt.Println("--Hit enter to quit--")
+	
 	subscribe(TOPIC, consumer)
 
-	fmt.Println("--Hit enter to quit--")
-	reader := bufio.NewReader(os.Stdin)
-	reader.ReadString('\n')
+	bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
 func subscribe(topic string, consumer sarama.Consumer) {
