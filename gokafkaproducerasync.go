@@ -116,7 +116,6 @@ func newMessageProducer(brokerList []string) sarama.AsyncProducer {
 	config.Producer.Flush.Frequency = 500 * time.Millisecond
 	config.Net.TLS.Enable = false
 
-	fmt.Println(brokerlist)
 	producer, err := sarama.NewAsyncProducer(brokerList, config)
 	if err != nil {
 		log.Fatalln("Failed to start Sarama producer:", err)
