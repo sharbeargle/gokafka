@@ -74,7 +74,7 @@ func (s *Server) SendMessage(key string, message string) {
 	s.MessageProducer.Input() <- &sarama.ProducerMessage {
 		Topic: "golangmessages",
 		Key: key,
-		Value: message
+		Value: message,
 	}
 }
 
