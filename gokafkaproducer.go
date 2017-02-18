@@ -8,6 +8,8 @@ import (
 	"log"
 	"bufio"
 	"os"
+	"time"
+	"encoding/json"
 )
 
 var (
@@ -41,6 +43,18 @@ func main() {
 	server.Run()
 }
 
+type Message struct {
+	Name			string `json:"name"`
+	MessageString	string`json:"message"`
+	encoded			[]byte
+	err				error
+}
+
+func (m *Message) Encode() ([]byte, error){
+	m.encoded, m.err = json.Marshal(m)
+	return m.encoded, m.err
+}
+
 type Server struct {
 	MessageProducer sarama.AsyncProducer
 }
@@ -57,20 +71,25 @@ func (s *Server) Run() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Println("")
-		fmt.Print("Enter Key: ")
+		fmt.Print("Enter Name: ")
 		key, _ := reader.ReadString('\n')
-		fmt.Print("Enter Value: ")
+		fmt.Print("Enter Message: ")
 		value, _ := reader.ReadString('\n')
+
+		message := &Message{
+			Name: key,
+			MessageString: value,
+		}
 
 		if key == "" {
 			return
 		} else {
-			s.SendMessage(key, value)
+			s.SendMessage(key, message)
 		}
 	}
 }
 
-func (s *Server) SendMessage(key string, message string) {
+func (s *Server) SendMessage(key string, message *Message) {
 	s.MessageProducer.Input() <- &sarama.ProducerMessage {
 		Topic: "golangmessages",
 		Key: sarama.StringEncoder(key),
