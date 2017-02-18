@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/Shopify/sarama"
 	"os"
+	"strings"
 )
 
 var (
