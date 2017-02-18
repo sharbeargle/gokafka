@@ -30,7 +30,7 @@ func main() {
 
 	fmt.Println("--Hit enter to quit--")
 
-	subscribe(TOPIC, consumer)
+	subscribe(*TOPIC, consumer)
 
 	bufio.NewReader(os.Stdin).ReadString('\n')
 }
