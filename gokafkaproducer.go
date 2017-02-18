@@ -29,7 +29,7 @@ func main() {
 	log.Printf("Kafka brokers: %s", strings.Join(brokerList, ", "))
 
 	server := &Server{
-		MessageProducer: newMessageProducer(brokerList)
+		MessageProducer: newMessageProducer(brokerList),
 	}
 
 	defer func() {
