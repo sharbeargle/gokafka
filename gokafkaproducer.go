@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"time"
 )
 
 var (
@@ -106,11 +105,11 @@ func (s *Server) SendMessage(message *Message) {
 	})
 
 	if err != nil {
-		fmt.Fprintf(w, "Failed to store your data:, %s", err)
+		fmt.Fprintf("Failed to store your data:, %s", err)
 	} else {
 		// The tuple (topic, partition, offset) can be used as a unique identifier
 		// for a message in a Kafka cluster.
-		fmt.Fprintf(w, "Your data is stored with unique identifier important/%d/%d", partition, offset)
+		fmt.Fprintf("Your data is stored with unique identifier important/%d/%d", partition, offset)
 	}
 }
 
@@ -121,17 +120,10 @@ func newMessageProducer(brokerList []string) sarama.SyncProducer {
 	config.Producer.Return.Successes = true
 	config.Net.TLS.Enable = false
 
-	fmt.Println(brokerlist)
 	producer, err := sarama.NewSyncProducer(brokerList, config)
 	if err != nil {
 		log.Fatalln("Failed to start Sarama producer:", err)
 	}
-
-	go func() {
-		for err := range producer.Errors() {
-			log.Println("Failed to write access log entry:", err)
-		}
-	}()
 
 	return producer
 }
