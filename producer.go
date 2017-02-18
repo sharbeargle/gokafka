@@ -20,7 +20,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	brokerList := strings.Split(*BROKERS, ',')
+	brokerList := strings.Split(*BROKERS, ",")
 
 	producer, err := newProducer(brokerList)
 	if err != nil {
