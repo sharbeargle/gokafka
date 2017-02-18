@@ -43,7 +43,7 @@ func main() {
 	server.Run()
 }
 
-// Struct holds message, implements sarama.Encoder
+// Message implements sarama.Encoder
 type Message struct {
 	Name			string `json:"name"`
 	MessageString	string`json:"message"`
@@ -67,6 +67,7 @@ func (m *Message) Length() int {
 	return len(m.encoded)
 }
 
+// Server runs to read in values, sending them to Kafka brokers via MessageProducer
 type Server struct {
 	MessageProducer sarama.AsyncProducer
 }
@@ -109,6 +110,7 @@ func (s *Server) SendMessage(key string, message *Message) {
 	}
 }
 
+// Generate an asynchronous Kafka producer
 func newMessageProducer(brokerList []string) sarama.AsyncProducer {
 	config := sarama.NewConfig()
 	config.Producer.RequiredAcks = sarama.WaitForLocal

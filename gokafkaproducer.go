@@ -42,7 +42,7 @@ func main() {
 	server.Run()
 }
 
-// Struct holds message, implements sarama.Encoder
+// Message implements sarama.Encoder
 type Message struct {
 	Name          string `json:"name"`
 	MessageString string `json:"message"`
@@ -66,16 +66,9 @@ func (m *Message) Length() int {
 	return len(m.encoded)
 }
 
+// Server runs to read in values, sending them to Kafka brokers via MessageProducer
 type Server struct {
 	MessageProducer sarama.SyncProducer
-}
-
-func (s *Server) Close() error {
-	if err := s.MessageProducer.Close(); err != nil {
-		log.Println("Failed to shut down data AsyncProducer cleanly", err)
-	}
-
-	return nil
 }
 
 func (s *Server) Run() {
@@ -86,8 +79,6 @@ func (s *Server) Run() {
 		key, _ := reader.ReadString('\n')
 		fmt.Print("Enter Message: ")
 		value, _ := reader.ReadString('\n')
-
-		fmt.Println(key, value)
 
 		message := &Message{
 			Name:          key,
@@ -111,12 +102,19 @@ func (s *Server) SendMessage(message *Message) {
 	if err != nil {
 		fmt.Println("Failed to store your data: ", err)
 	} else {
-		// The tuple (topic, partition, offset) can be used as a unique identifier
-		// for a message in a Kafka cluster.
-		fmt.Println("Your data is stored with unique identifier important ", partition, offset)
+		fmt.Println("Your data is stored with unique identifier (partition, offset): ", partition, offset)
 	}
 }
 
+func (s *Server) Close() error {
+	if err := s.MessageProducer.Close(); err != nil {
+		log.Println("Failed to shut down data AsyncProducer cleanly", err)
+	}
+
+	return nil
+}
+
+// Generate a synchronous Kafka producer
 func newMessageProducer(brokerList []string) sarama.SyncProducer {
 	config := sarama.NewConfig()
 	config.Producer.RequiredAcks = sarama.WaitForAll
