@@ -94,7 +94,11 @@ func (s *Server) Run() {
 			MessageString: value,
 		}
 
-		s.SendMessage(message)
+		if key == "\n" {
+			return
+		} else {
+			s.SendMessage(message)
+		}
 	}
 }
 
