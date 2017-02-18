@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list")
-	TOPIC   = "golangmessages"
+	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list (ie -brokers=kafkasrv1,kafkasrv2,kafkasrv3)")
+	TOPIC   = flag.String("topic", "golangmessages", "The Kafka brokers to connect to, as a comma separated list")
 )
 
 func main() {
@@ -48,7 +48,7 @@ func main() {
 
 func newProducer(brokerlist) (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
-	config.Producer.Partitioner = sarama.NewRandomPartitioner
+	//config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
 	producer, err := sarama.NewSyncProducer(brokerlist, config)
 
