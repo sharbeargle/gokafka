@@ -105,11 +105,11 @@ func (s *Server) SendMessage(message *Message) {
 	})
 
 	if err != nil {
-		fmt.Fprintf("Failed to store your data:, %s", err)
+		fmt.Println("Failed to store your data: ", err)
 	} else {
 		// The tuple (topic, partition, offset) can be used as a unique identifier
 		// for a message in a Kafka cluster.
-		fmt.Fprintf("Your data is stored with unique identifier important/%d/%d", partition, offset)
+		fmt.Println("Your data is stored with unique identifier important ", partition, offset)
 	}
 }
 
