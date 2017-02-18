@@ -6,6 +6,7 @@ import (
 	"github.com/Shopify/sarama"
 	"os"
 	"strings"
+	"bufio"
 )
 
 var (
@@ -23,6 +24,10 @@ func main() {
 	}
 
 	subscribe(TOPIC, consumer)
+
+	fmt.Println("--Hit enter to quit--")
+	reader := bufio.NewReader(os.Stdin)
+	_, _ := reader.ReadString('\n')
 }
 
 func subscribe(topic string, consumer sarama.Consumer) {
