@@ -68,7 +68,7 @@ func (m *Message) Length() int {
 }
 
 type Server struct {
-	MessageProducer sarama.AsyncProducer
+	MessageProducer sarama.SyncProducer
 }
 
 func (s *Server) Close() error {
@@ -93,30 +93,30 @@ func (s *Server) Run() {
 			MessageString: value,
 		}
 
-		if key == "" {
+		if key == "\n" {
 			return
 		} else {
-			s.SendMessage(key, message)
+			s.SendMessage(message)
 		}
 	}
 }
 
-func (s *Server) SendMessage(key string, message *Message) {
+func (s *Server) SendMessage(message *Message) {
 	s.MessageProducer.Input() <- &sarama.ProducerMessage {
 		Topic: "golangmessages",
-		Key: sarama.StringEncoder(key),
 		Value: message,
 	}
 }
 
-func newMessageProducer(brokerList []string) sarama.AsyncProducer {
+func newMessageProducer(brokerList []string) sarama.SyncProducer {
 	config := sarama.NewConfig()
-	config.Producer.RequiredAcks = sarama.WaitForLocal
-	config.Producer.Compression = sarama.CompressionSnappy
-	config.Producer.Flush.Frequency = 500 * time.Millisecond
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Retry.Max = 10
+	config.Producer.Return.Successes = true
 	config.Net.TLS.Enable = false
 
-	producer, err := sarama.NewAsyncProducer(brokerList, config)
+	fmt.Println(brokerlist)
+	producer, err := sarama.NewSyncProducer(brokerList, config)
 	if err != nil {
 		log.Fatalln("Failed to start Sarama producer:", err)
 	}
