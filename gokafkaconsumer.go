@@ -13,6 +13,11 @@ var (
 )
 
 func main() {
+	if *BROKERS == "" {
+		flag.PrintDefaults()
+		os.Exit(1)
+	}
+
 	consumer, err := sarama.NewConsumer(BROKERS, nil)
 	if err != nil {
 		fmt.Println("Failed to create Sarama consumer:", err)
