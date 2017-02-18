@@ -88,6 +88,8 @@ func (s *Server) Run() {
 		fmt.Print("Enter Message: ")
 		value, _ := reader.ReadString('\n')
 
+		fmt.Println(key, value)
+
 		message := &Message{
 			Name:          key,
 			MessageString: value,
