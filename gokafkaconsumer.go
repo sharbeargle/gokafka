@@ -16,7 +16,7 @@ var (
 func main() {
 	brokerList := strings.Split(*BROKERS, ",")
 
-	consumer, err := sarama.NewConsumer(BROKERS, nil)
+	consumer, err := sarama.NewConsumer(brokerList, nil)
 	if err != nil {
 		fmt.Println("Failed to create Sarama consumer:", err)
 		os.Exit(1)
