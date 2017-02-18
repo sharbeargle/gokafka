@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bufio"
+	"flag"
 	"fmt"
 	"github.com/Shopify/sarama"
-	"strings"
-	"flag"
 	"os"
-	"bufio"
+	"strings"
 )
 
 var (

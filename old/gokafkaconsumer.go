@@ -11,12 +11,17 @@ import (
 
 var (
 	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list")
-	TOPIC   = "golangmessages"
+	TOPIC   = flag.String("topic", "golangmessages", "The Kafka brokers to connect to, as a comma separated list")
 )
 
 // Simple demo of creating a Kafka consumer
 // This will get all messages from all partitions of a topic
 func main() {
+	if *BROKERS == "" {
+		fmt.Println("No brokers available")
+		os.Exit(1)
+	}
+
 	brokerList := strings.Split(*BROKERS, ",")
 
 	consumer, err := sarama.NewConsumer(brokerList, nil)

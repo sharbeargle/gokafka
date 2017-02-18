@@ -13,14 +13,9 @@ import (
 
 var (
 	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list")
-	VERBOSE = flag.Bool("verbose", false, "Turn on Sarama logging")
 )
 
 func main() {
-	if *VERBOSE {
-		sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
-	}
-
 	if *BROKERS == "" {
 		flag.PrintDefaults()
 		os.Exit(1)
