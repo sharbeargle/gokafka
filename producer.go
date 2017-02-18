@@ -20,9 +20,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	brokerlist = strings.Split(*BROKERS, ',')
+	brokerList := strings.Split(*BROKERS, ',')
 
-	producer, err := newProducer(brokerlist)
+	producer, err := newProducer(brokerList)
 	if err != nil {
 		fmt.Println("Failed to create Sarama producer:", err)
 		os.Exit(1)
@@ -40,17 +40,17 @@ func main() {
 			os.Exit(0)
 		}
 
-		msg := prepareMessage(TOPIC, message)
+		msg := prepareMessage(*TOPIC, message)
 		partition, offset, err := producer.SendMessage(msg)
 		fmt.Printf("Message was saved to partion: %d.\nMessage offset is: %d.\n %s error occured.\n", partition, offset, err.Error())
 	}
 }
 
-func newProducer(brokerlist) (sarama.SyncProducer, error) {
+func newProducer(brokerList) (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
 	//config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
-	producer, err := sarama.NewSyncProducer(brokerlist, config)
+	producer, err := sarama.NewSyncProducer(brokerList, config)
 
 	return producer, err
 }
