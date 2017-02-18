@@ -31,7 +31,7 @@ func main() {
 	reader := bufio.NewReader(os.Stdin)
 
 	for {
-		fmt.Println("Enter message: ")
+		fmt.Printf("Enter message: ")
 		message, _ := reader.ReadString('\n')
 		message = strings.TrimSpace(message)
 
