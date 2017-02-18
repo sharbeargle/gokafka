@@ -14,6 +14,8 @@ var (
 	TOPIC   = "golangmessages"
 )
 
+// Simple demo of creating a Kafka consumer
+// This will get all messages from all partitions of a topic
 func main() {
 	brokerList := strings.Split(*BROKERS, ",")
 
@@ -24,19 +26,21 @@ func main() {
 	}
 
 	fmt.Println("--Hit enter to quit--")
-	
+
 	subscribe(TOPIC, consumer)
 
 	bufio.NewReader(os.Stdin).ReadString('\n')
 }
 
 func subscribe(topic string, consumer sarama.Consumer) {
-	partitionList, err := consumer.Partitions(topic) //get all partitions on the given topic
+	// Get all partitions on the given topic
+	partitionList, err := consumer.Partitions(topic) 
 	if err != nil {
 		fmt.Println("Error retrieving partitionList ", err)
 	}
 
-	initialOffset := sarama.OffsetOldest //get offset for the oldest message on the topic
+	// Get offset for the oldest message on the topic
+	initialOffset := sarama.OffsetOldest 
 
 	for _, partition := range partitionList {
 		pc, _ := consumer.ConsumePartition(topic, partition, initialOffset)
@@ -49,6 +53,7 @@ func subscribe(topic string, consumer sarama.Consumer) {
 	}
 }
 
+// Do something with the new message
 func messageReceived(message *sarama.ConsumerMessage) {
 	fmt.Println(string(message.Value))
 }
