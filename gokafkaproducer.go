@@ -106,6 +106,14 @@ func (s *Server) SendMessage(message *Message) {
 		Topic: "golangmessages",
 		Value: message,
 	})
+
+	if err != nil {
+			fmt.Fprintf(w, "Failed to store your data:, %s", err)
+	} else {
+		// The tuple (topic, partition, offset) can be used as a unique identifier
+		// for a message in a Kafka cluster.
+		fmt.Fprintf(w, "Your data is stored with unique identifier important/%d/%d", partition, offset)
+	}
 }
 
 func newMessageProducer(brokerList []string) sarama.SyncProducer {
