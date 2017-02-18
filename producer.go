@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list (ie -brokers=kafkasrv1,kafkasrv2,kafkasrv3)")
+	BROKERS = flag.String("brokers", os.Getenv("KAFKA_PEERS"), "The Kafka brokers to connect to, as a comma separated list (ie -brokers=kafkasrv1:9092,kafkasrv2:9092,kafkasrv3.13:9092)")
 	TOPIC   = flag.String("topic", "golangmessages", "The Kafka brokers to connect to, as a comma separated list")
 )
 
