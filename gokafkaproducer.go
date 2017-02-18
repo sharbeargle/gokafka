@@ -1,15 +1,15 @@
 package main
 
 import (
+	"bufio"
+	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/Shopify/sarama"
-	"flag"
-	"strings"
 	"log"
-	"bufio"
 	"os"
+	"strings"
 	"time"
-	"encoding/json"
 )
 
 var (
@@ -45,13 +45,13 @@ func main() {
 
 // Struct holds message, implements sarama.Encoder
 type Message struct {
-	Name			string `json:"name"`
-	MessageString	string`json:"message"`
-	encoded			[]byte
-	err				error
+	Name          string `json:"name"`
+	MessageString string `json:"message"`
+	encoded       []byte
+	err           error
 }
 
-func (m *Message) EnsureEncoded() () {
+func (m *Message) EnsureEncoded() {
 	if m.encoded == nil && m.err == nil {
 		m.encoded, m.err = json.Marshal(m)
 	}
@@ -89,15 +89,11 @@ func (s *Server) Run() {
 		value, _ := reader.ReadString('\n')
 
 		message := &Message{
-			Name: key,
+			Name:          key,
 			MessageString: value,
 		}
 
-		if key == "\n" {
-			return
-		} else {
-			s.SendMessage(message)
-		}
+		s.SendMessage(message)
 	}
 }
 
@@ -108,7 +104,7 @@ func (s *Server) SendMessage(message *Message) {
 	})
 
 	if err != nil {
-			fmt.Fprintf(w, "Failed to store your data:, %s", err)
+		fmt.Fprintf(w, "Failed to store your data:, %s", err)
 	} else {
 		// The tuple (topic, partition, offset) can be used as a unique identifier
 		// for a message in a Kafka cluster.
