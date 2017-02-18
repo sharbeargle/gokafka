@@ -16,16 +16,16 @@ var (
 )
 
 func main() {
-	if *verbose {
+	if *VERBOSE {
 		sarama.Logger = log.New(os.Stdout, "[sarama] ", log.LstdFlags)
 	}
 
-	if *brokers == "" {
+	if *BROKERS == "" {
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
 
-	brokerList := strings.Split(*brokers, ",")
+	brokerList := strings.Split(*BROKERS, ",")
 	log.Printf("Kafka brokers: %s", strings.Join(brokerList, ", "))
 
 	server := &Server{
