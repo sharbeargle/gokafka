@@ -43,6 +43,7 @@ func main() {
 	server.Run()
 }
 
+// Struct holds message, implements sarama.Encoder
 type Message struct {
 	Name			string `json:"name"`
 	MessageString	string`json:"message"`
@@ -50,9 +51,20 @@ type Message struct {
 	err				error
 }
 
-func (m *Message) Encode() ([]byte, error){
-	m.encoded, m.err = json.Marshal(m)
+func (m *Message) EnsureEncoded() () {
+	if m.encoded == nil && m.err == nil {
+		m.encoded, m.err = json.Marshal(m)
+	}
+}
+
+func (m *Message) Encode() ([]byte, error) {
+	m.EnsureEncoded()
 	return m.encoded, m.err
+}
+
+func (m *Message) Length() int {
+	m.EnsureEncoded()
+	return len(m.encoded)
 }
 
 type Server struct {
