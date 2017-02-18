@@ -48,7 +48,6 @@ func main() {
 
 func newProducer(brokerList []string) (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
-	//config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.Retry.Max = 10
 	config.Producer.Return.Successes = true
 	config.Net.TLS.Enable = false
