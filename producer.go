@@ -46,7 +46,7 @@ func main() {
 	}
 }
 
-func newProducer(brokerList string) (sarama.SyncProducer, error) {
+func newProducer(brokerList []string) (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
 	//config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
