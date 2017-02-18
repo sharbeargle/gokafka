@@ -41,8 +41,8 @@ func main() {
 		}
 
 		msg := prepareMessage(*TOPIC, message)
-		partition, offset, err := producer.SendMessage(msg)
-		fmt.Printf("Message was saved to partion: %d.\nMessage offset is: %d.\n %s error occured.\n", partition, offset, err.Error())
+		partition, offset, _ := producer.SendMessage(msg)
+		fmt.Printf("Message was saved to partion: %d.\nMessage offset is: %d.\n", partition, offset)
 	}
 }
 
