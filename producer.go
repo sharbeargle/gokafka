@@ -15,7 +15,14 @@ var (
 )
 
 func main() {
-	producer, err := newProducer()
+	if *BROKERS == "" {
+		fmt.Println("No brokers available")
+		os.Exit(1)
+	}
+
+	brokerlist = strings.Split(*BROKERS, ',')
+
+	producer, err := newProducer(brokerlist)
 	if err != nil {
 		fmt.Println("Failed to create Sarama producer:", err)
 		os.Exit(1)
@@ -39,11 +46,11 @@ func main() {
 	}
 }
 
-func newProducer() (sarama.SyncProducer, error) {
+func newProducer(brokerlist) (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
 	config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
-	producer, err := sarama.NewSyncProducer(BROKERS, config)
+	producer, err := sarama.NewSyncProducer(brokerlist, config)
 
 	return producer, err
 }
