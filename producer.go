@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"github.com/Shopify/sarama"
 	"strings"
+	"flag"
+	"os"
+	"bufio"
 )
 
 var (
@@ -40,7 +43,7 @@ func newProducer() (sarama.SyncProducer, error) {
 	config := sarama.NewConfig()
 	config.Producer.Partitioner = sarama.NewRandomPartitioner
 	config.Producer.RequiredAcks = sarama.WaitForAll
-	producer, err := sarama.NewSyncProducer(brokers, config)
+	producer, err := sarama.NewSyncProducer(BROKERS, config)
 
 	return producer, err
 }
