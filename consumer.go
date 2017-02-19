@@ -15,8 +15,8 @@ var (
 )
 
 func main() {
-	flang.Parse()
-	
+	flag.Parse()
+
 	if *BROKERS == "" {
 		fmt.Println("No brokers available")
 		os.Exit(1)
